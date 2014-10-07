@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/GiftCertPro.dll">
+      <publishTime>10/06/2014 16:47:54</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.Configuration.dll">
+      <publishTime>10/06/2014 14:05:28</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.dll">
+      <publishTime>10/06/2014 14:05:28</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.RegistrationByConvention.dll">
+      <publishTime>10/06/2014 14:05:28</publishTime>
+    </File>
+    <File Include="bin/MyGiftCard.dll">
+      <publishTime>10/06/2014 20:27:06</publishTime>
+    </File>
+    <File Include="bin/Unity.Wcf.dll">
+      <publishTime>10/06/2014 14:10:35</publishTime>
+    </File>
+    <File Include="MyGiftCardService.svc">
+      <publishTime>10/06/2014 17:09:43</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>10/06/2014 14:20:01</publishTime>
+    </File>
+    <File Include="Unity.Wcf.README.txt">
+      <publishTime>10/06/2014 14:10:35</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/06/2014 20:20:07</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

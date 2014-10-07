@@ -1,0 +1,7 @@
+﻿<%@ 
+    ServiceHost Language="C#" 
+    Debug="true" 
+    Service="MyGiftCard.MyGiftCardService" 
+    CodeBehind="MyGiftCardService.svc.cs"
+    Factory="MyGiftCard.WcfServiceFactory"
+    %>
