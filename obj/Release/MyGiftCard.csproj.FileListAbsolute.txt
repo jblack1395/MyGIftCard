@@ -9,3 +9,15 @@ C:\Users\James\Documents\Visual Studio 2012\Projects\GiftCertPro\GiftCertPro\bin
 C:\Users\James\Documents\Visual Studio 2012\Projects\GiftCertPro\GiftCertPro\bin\MyGiftCard.pdb
 C:\Users\James\Documents\Visual Studio 2012\Projects\GiftCertPro\GiftCertPro\obj\Release\MyGiftCard.dll
 C:\Users\James\Documents\Visual Studio 2012\Projects\GiftCertPro\GiftCertPro\obj\Release\MyGiftCard.pdb
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\MyGiftCard.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\MyGiftCard.pdb
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.Configuration.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Unity.Wcf.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.Configuration.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.csprojResolveAssemblyReference.cache
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.pdb

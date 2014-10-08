@@ -81,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EncryptionUtil.cs" />
+    <Compile Include="GiftCardMysqlDAO.cs" />
     <Compile Include="IEncryptionUtil.cs" />
+    <Compile Include="IGiftCardDAO.cs" />
     <Compile Include="MyGiftCardController.cs" />
     <Compile Include="MyGiftCardService.svc.cs">
       <DependentUpon>MyGiftCardService.svc</DependentUpon>

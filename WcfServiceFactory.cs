@@ -11,6 +11,7 @@ namespace MyGiftCard
             container
   .RegisterType<IMyGiftCardService, MyGiftCardService>()
   .RegisterType<IEncryptionUtil, EncryptionUtil>()
+  .RegisterType<IGiftCardDAO, GiftCardMysqlDAO>()
   .RegisterType<IMyGiftCardController, MyGiftCardController>();
 			// register all your components with the container here
             // container
