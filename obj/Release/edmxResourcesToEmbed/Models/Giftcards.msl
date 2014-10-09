@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="mygiftcardModelStoreContainer" CdmEntityContainer="mygiftcardEntities1">
+    <EntitySetMapping Name="addresses">
+      <EntityTypeMapping TypeName="mygiftcardModel.address">
+        <MappingFragment StoreEntitySet="address">
+          <ScalarProperty Name="customerid" ColumnName="customerid" />
+          <ScalarProperty Name="addressNumber" ColumnName="addressNumber" />
+          <ScalarProperty Name="address1" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="postalCode" ColumnName="postalCode" />
+          <ScalarProperty Name="country" ColumnName="country" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="contact_info">
+      <EntityTypeMapping TypeName="mygiftcardModel.contact_info">
+        <MappingFragment StoreEntitySet="contact_info">
+          <ScalarProperty Name="contactInfoNumber" ColumnName="contactInfoNumber" />
+          <ScalarProperty Name="customerid" ColumnName="customerid" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="website" ColumnName="website" />
+          <ScalarProperty Name="mastercardAccepted" ColumnName="mastercardAccepted" />
+          <ScalarProperty Name="discoverAccepted" ColumnName="discoverAccepted" />
+          <ScalarProperty Name="americanExpressAccepted" ColumnName="americanExpressAccepted" />
+          <ScalarProperty Name="visaAccepted" ColumnName="visaAccepted" />
+          <ScalarProperty Name="allowGratuity" ColumnName="allowGratuity" />
+          <ScalarProperty Name="allowMailOption" ColumnName="allowMailOption" />
+          <ScalarProperty Name="shippingCost" ColumnName="shippingCost" />
+          <ScalarProperty Name="expireAfterDays" ColumnName="expireAfterDays" />
+          <ScalarProperty Name="finePrint" ColumnName="finePrint" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customers">
+      <EntityTypeMapping TypeName="mygiftcardModel.customer">
+        <MappingFragment StoreEntitySet="customers">
+          <ScalarProperty Name="customerNumber" ColumnName="customerNumber" />
+          <ScalarProperty Name="customerName" ColumnName="customerName" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="logoUploaded" ColumnName="logoUploaded" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="giftcards">
+      <EntityTypeMapping TypeName="mygiftcardModel.giftcard">
+        <MappingFragment StoreEntitySet="giftcards">
+          <ScalarProperty Name="giftcardNumber" ColumnName="giftcardNumber" />
+          <ScalarProperty Name="customerid" ColumnName="customerid" />
+          <ScalarProperty Name="giftcardMessage" ColumnName="giftcardMessage" />
+          <ScalarProperty Name="giftcardRecipient" ColumnName="giftcardRecipient" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

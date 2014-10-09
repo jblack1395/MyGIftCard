@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mygiftcardModel.Store" Alias="Self" Provider="Devart.Data.MySql" ProviderManifestToken="MySQL, 5.6.17" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="mygiftcardModelStoreContainer">
+    <EntitySet Name="address" EntityType="mygiftcardModel.Store.address" store:Type="Tables" Schema="mygiftcard" />
+    <EntitySet Name="contact_info" EntityType="mygiftcardModel.Store.contact_info" store:Type="Tables" Schema="mygiftcard" />
+    <EntitySet Name="customers" EntityType="mygiftcardModel.Store.customers" store:Type="Tables" Schema="mygiftcard" />
+    <EntitySet Name="giftcards" EntityType="mygiftcardModel.Store.giftcards" store:Type="Tables" Schema="mygiftcard" />
+    <AssociationSet Name="FK_address_customer" Association="mygiftcardModel.Store.FK_address_customer">
+      <End Role="customers" EntitySet="customers" />
+      <End Role="address" EntitySet="address" />
+    </AssociationSet>
+    <AssociationSet Name="FK_contactInfo_customer" Association="mygiftcardModel.Store.FK_contactInfo_customer">
+      <End Role="customers" EntitySet="customers" />
+      <End Role="contact_info" EntitySet="contact_info" />
+    </AssociationSet>
+    <AssociationSet Name="FK_giftcards_customer" Association="mygiftcardModel.Store.FK_giftcards_customer">
+      <End Role="customers" EntitySet="customers" />
+      <End Role="giftcards" EntitySet="giftcards" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="address">
+    <Key>
+      <PropertyRef Name="addressNumber" />
+    </Key>
+    <Property Name="addressNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="address" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="city" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="state" Type="varchar" MaxLength="50" />
+    <Property Name="postalCode" Type="varchar" MaxLength="15" />
+    <Property Name="country" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="customerid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="contact_info">
+    <Key>
+      <PropertyRef Name="contactInfoNumber" />
+    </Key>
+    <Property Name="contactInfoNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="phone" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="fax" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="website" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="mastercardAccepted" Type="int" />
+    <Property Name="discoverAccepted" Type="int" />
+    <Property Name="americanExpressAccepted" Type="int" />
+    <Property Name="visaAccepted" Type="int" />
+    <Property Name="allowGratuity" Type="int" />
+    <Property Name="allowMailOption" Type="int" />
+    <Property Name="shippingCost" Type="double" />
+    <Property Name="expireAfterDays" Type="int" />
+    <Property Name="finePrint" Type="varchar" MaxLength="512" />
+    <Property Name="customerid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="customers">
+    <Key>
+      <PropertyRef Name="customerNumber" />
+    </Key>
+    <Property Name="customerNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="customerName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="password" Type="varchar" Nullable="false" MaxLength="24" />
+    <Property Name="logoUploaded" Type="int" />
+  </EntityType>
+  <EntityType Name="giftcards">
+    <Key>
+      <PropertyRef Name="giftcardNumber" />
+    </Key>
+    <Property Name="giftcardNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="giftcardMessage" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="giftcardRecipient" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="customerid" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_address_customer">
+    <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+    <End Role="address" Type="mygiftcardModel.Store.address" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customers">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="address">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_contactInfo_customer">
+    <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+    <End Role="contact_info" Type="mygiftcardModel.Store.contact_info" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customers">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="contact_info">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_giftcards_customer">
+    <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+    <End Role="giftcards" Type="mygiftcardModel.Store.giftcards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customers">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="giftcards">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -10,5 +10,6 @@ namespace MyGiftCard
     public interface IMyGiftCardController
     {
         IEncryptionUtil EncUtil { get; }
+        List<SalonModel> retrieveCustomers();
     }
 }

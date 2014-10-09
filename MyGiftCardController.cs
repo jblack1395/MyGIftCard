@@ -24,6 +24,9 @@ namespace MyGiftCard
                 return encryptionUtil;
             }
         }
-
+        public List<SalonModel> retrieveCustomers()
+        {
+            return dao.retrieveCustomers();
+        }
     }
 }

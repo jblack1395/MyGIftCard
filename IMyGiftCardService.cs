@@ -227,8 +227,6 @@ namespace MyGiftCard
             AllowMailOption = (AllowMailOption == null ? false : AllowMailOption);
             ExpireAfterDays = (ExpireAfterDays == null ? 0 : ExpireAfterDays);
         }
-
-
     }
     [DataContract]
     public partial class ContactInfo
@@ -259,6 +257,8 @@ namespace MyGiftCard
         public String State { set; get; }
         [DataMember]
         public String Zip { set; get; }
+        [DataMember]
+        public String County { set; get; }
     }
     [DataContract]
     public partial class CurrentSalonDisplaySettings
@@ -268,7 +268,12 @@ namespace MyGiftCard
         [DataMember]
         public String CurrentThemeName { set; get; }
         [DataMember]
-        public String CurrentLogoName { set; get; }
+        public Boolean? LogoUploaded { set; get; }
+        [System.Runtime.Serialization.OnDeserialized]
+        void OnDeserialized(System.Runtime.Serialization.StreamingContext c)
+        {
+            LogoUploaded = (LogoUploaded == null ? false : LogoUploaded);
+        }
     }
 
     [DataContract]

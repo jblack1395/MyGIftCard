@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mygiftcardModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="mygiftcardEntities1" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="addresses" EntityType="mygiftcardModel.address" />
+    <EntitySet Name="contact_info" EntityType="mygiftcardModel.contact_info" />
+    <EntitySet Name="customers" EntityType="mygiftcardModel.customer" />
+    <EntitySet Name="giftcards" EntityType="mygiftcardModel.giftcard" />
+    <AssociationSet Name="FK_customer_contact_info" Association="mygiftcardModel.FK_customer_contact_info">
+      <End Role="customers" EntitySet="customers" />
+      <End Role="contact_info" EntitySet="contact_info" />
+    </AssociationSet>
+    <AssociationSet Name="FK_customer_giftcards" Association="mygiftcardModel.FK_customer_giftcards">
+      <End Role="customers" EntitySet="customers" />
+      <End Role="giftcards" EntitySet="giftcards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_address_customer" Association="mygiftcardModel.FK_address_customer">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="address" EntitySet="addresses" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="address">
+    <Key>
+      <PropertyRef Name="addressNumber" />
+    </Key>
+    <Property Name="addressNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="address1" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="city" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="state" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="postalCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="country" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Type="Int32" Name="customerid" Nullable="false" />
+    <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_address_customer" FromRole="address" ToRole="customer" />
+  </EntityType>
+  <EntityType Name="contact_info">
+    <Key>
+      <PropertyRef Name="contactInfoNumber" />
+    </Key>
+    <Property Name="contactInfoNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="customerid" Type="Int32" Nullable="false" />
+    <Property Name="email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="phone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="fax" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="website" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="mastercardAccepted" Type="Int32" />
+    <Property Name="discoverAccepted" Type="Int32" />
+    <Property Name="americanExpressAccepted" Type="Int32" />
+    <Property Name="visaAccepted" Type="Int32" />
+    <Property Name="allowGratuity" Type="Int32" />
+    <Property Name="allowMailOption" Type="Int32" />
+    <Property Name="shippingCost" Type="Double" />
+    <Property Name="expireAfterDays" Type="Int32" />
+    <Property Name="finePrint" Type="String" MaxLength="512" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_customer_contact_info" FromRole="contact_info" ToRole="customers" />
+  </EntityType>
+  <EntityType Name="customer">
+    <Key>
+      <PropertyRef Name="customerNumber" />
+    </Key>
+    <Property Name="customerNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="customerName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="24" Unicode="true" FixedLength="false" />
+    <Property Name="logoUploaded" Type="Int32" />
+    <NavigationProperty Name="contact_info" Relationship="mygiftcardModel.FK_customer_contact_info" FromRole="customers" ToRole="contact_info" />
+    <NavigationProperty Name="giftcards" Relationship="mygiftcardModel.FK_customer_giftcards" FromRole="customers" ToRole="giftcards" />
+    <NavigationProperty Name="addresses" Relationship="mygiftcardModel.FK_address_customer" FromRole="customer" ToRole="address" />
+  </EntityType>
+  <EntityType Name="giftcard">
+    <Key>
+      <PropertyRef Name="giftcardNumber" />
+    </Key>
+    <Property Name="giftcardNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="customerid" Type="Int32" Nullable="false" />
+    <Property Name="giftcardMessage" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="giftcardRecipient" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_customer_giftcards" FromRole="giftcards" ToRole="customers" />
+  </EntityType>
+  <Association Name="FK_customer_contact_info">
+    <End Role="customers" Type="mygiftcardModel.customer" Multiplicity="1" />
+    <End Role="contact_info" Type="mygiftcardModel.contact_info" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customers">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="contact_info">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_customer_giftcards">
+    <End Role="customers" Type="mygiftcardModel.customer" Multiplicity="1" />
+    <End Role="giftcards" Type="mygiftcardModel.giftcard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customers">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="giftcards">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_address_customer">
+    <End Type="mygiftcardModel.customer" Role="customer" Multiplicity="1" />
+    <End Type="mygiftcardModel.address" Role="address" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="customerNumber" />
+      </Principal>
+      <Dependent Role="address">
+        <PropertyRef Name="customerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

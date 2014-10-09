@@ -8,8 +8,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\inetpub\wwwroot\MyGiftCard</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>10/08/2014 09:46:27</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>10/08/2014 09:46:27</publishTime>
+    </File>
     <File Include="bin/GiftCertPro.dll">
       <publishTime>10/06/2014 16:47:54</publishTime>
     </File>
@@ -23,22 +30,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/06/2014 14:05:28</publishTime>
     </File>
     <File Include="bin/MyGiftCard.dll">
-      <publishTime>10/08/2014 00:01:47</publishTime>
+      <publishTime>10/09/2014 11:50:43</publishTime>
     </File>
     <File Include="bin/Unity.Wcf.dll">
       <publishTime>10/06/2014 14:10:35</publishTime>
     </File>
+    <File Include="Models/Giftcards.Context.tt">
+      <publishTime>10/08/2014 22:23:24</publishTime>
+    </File>
+    <File Include="Models/Giftcards.edmx.diagram">
+      <publishTime>10/08/2014 22:31:14</publishTime>
+    </File>
+    <File Include="Models/Giftcards.tt">
+      <publishTime>10/08/2014 22:23:24</publishTime>
+    </File>
     <File Include="MyGiftCardService.svc">
       <publishTime>10/06/2014 17:09:43</publishTime>
     </File>
+    <File Include="mysql_tables.sql">
+      <publishTime>10/08/2014 22:30:18</publishTime>
+    </File>
     <File Include="packages.config">
-      <publishTime>10/06/2014 14:20:01</publishTime>
+      <publishTime>10/08/2014 09:46:37</publishTime>
     </File>
     <File Include="Unity.Wcf.README.txt">
       <publishTime>10/06/2014 14:10:35</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/08/2014 00:01:47</publishTime>
+      <publishTime>10/08/2014 22:49:30</publishTime>
     </File>
   </ItemGroup>
 </Project>

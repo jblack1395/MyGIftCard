@@ -21,3 +21,7 @@ C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\M
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.csprojResolveAssemblyReference.cache
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.dll
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Release\MyGiftCard.pdb
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.SqlServer.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.SqlServer.xml

@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mygiftcardModel.Store" Alias="Self" Provider="Devart.Data.MySql" ProviderManifestToken="MySQL, 5.6.17" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="mygiftcardModelStoreContainer">
+          <EntitySet Name="address" EntityType="mygiftcardModel.Store.address" store:Type="Tables" Schema="mygiftcard" />
+          <EntitySet Name="contact_info" EntityType="mygiftcardModel.Store.contact_info" store:Type="Tables" Schema="mygiftcard" />
+          <EntitySet Name="customers" EntityType="mygiftcardModel.Store.customers" store:Type="Tables" Schema="mygiftcard" />
+          <EntitySet Name="giftcards" EntityType="mygiftcardModel.Store.giftcards" store:Type="Tables" Schema="mygiftcard" />
+          <AssociationSet Name="FK_address_customer" Association="mygiftcardModel.Store.FK_address_customer">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="address" EntitySet="address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_contactInfo_customer" Association="mygiftcardModel.Store.FK_contactInfo_customer">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="contact_info" EntitySet="contact_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_giftcards_customer" Association="mygiftcardModel.Store.FK_giftcards_customer">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="giftcards" EntitySet="giftcards" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="addressNumber" />
+          </Key>
+          <Property Name="addressNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="address" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="city" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="postalCode" Type="varchar" MaxLength="15" />
+          <Property Name="country" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="customerid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="contact_info">
+          <Key>
+            <PropertyRef Name="contactInfoNumber" />
+          </Key>
+          <Property Name="contactInfoNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="phone" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="fax" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="website" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="mastercardAccepted" Type="int" />
+          <Property Name="discoverAccepted" Type="int" />
+          <Property Name="americanExpressAccepted" Type="int" />
+          <Property Name="visaAccepted" Type="int" />
+          <Property Name="allowGratuity" Type="int" />
+          <Property Name="allowMailOption" Type="int" />
+          <Property Name="shippingCost" Type="double" />
+          <Property Name="expireAfterDays" Type="int" />
+          <Property Name="finePrint" Type="varchar" MaxLength="512" />
+          <Property Name="customerid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="customerNumber" />
+          </Key>
+          <Property Name="customerNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="customerName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="password" Type="varchar" Nullable="false" MaxLength="24" />
+          <Property Name="logoUploaded" Type="int" />
+        </EntityType>
+        <EntityType Name="giftcards">
+          <Key>
+            <PropertyRef Name="giftcardNumber" />
+          </Key>
+          <Property Name="giftcardNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="giftcardMessage" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="giftcardRecipient" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="customerid" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_address_customer">
+          <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+          <End Role="address" Type="mygiftcardModel.Store.address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="address">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_contactInfo_customer">
+          <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+          <End Role="contact_info" Type="mygiftcardModel.Store.contact_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="contact_info">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_giftcards_customer">
+          <End Role="customers" Type="mygiftcardModel.Store.customers" Multiplicity="1" />
+          <End Role="giftcards" Type="mygiftcardModel.Store.giftcards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="giftcards">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mygiftcardModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="mygiftcardEntities1" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="addresses" EntityType="mygiftcardModel.address" />
+          <EntitySet Name="contact_info" EntityType="mygiftcardModel.contact_info" />
+          <EntitySet Name="customers" EntityType="mygiftcardModel.customer" />
+          <EntitySet Name="giftcards" EntityType="mygiftcardModel.giftcard" />
+          <AssociationSet Name="FK_customer_contact_info" Association="mygiftcardModel.FK_customer_contact_info">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="contact_info" EntitySet="contact_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_giftcards" Association="mygiftcardModel.FK_customer_giftcards">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="giftcards" EntitySet="giftcards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_address_customer" Association="mygiftcardModel.FK_address_customer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="address" EntitySet="addresses" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="addressNumber" />
+          </Key>
+          <Property Name="addressNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="address1" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="state" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="postalCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="country" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="customerid" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_address_customer" FromRole="address" ToRole="customer" />
+        </EntityType>
+        <EntityType Name="contact_info">
+          <Key>
+            <PropertyRef Name="contactInfoNumber" />
+          </Key>
+          <Property Name="contactInfoNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="customerid" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="fax" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="website" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="mastercardAccepted" Type="Int32" />
+          <Property Name="discoverAccepted" Type="Int32" />
+          <Property Name="americanExpressAccepted" Type="Int32" />
+          <Property Name="visaAccepted" Type="Int32" />
+          <Property Name="allowGratuity" Type="Int32" />
+          <Property Name="allowMailOption" Type="Int32" />
+          <Property Name="shippingCost" Type="Double" />
+          <Property Name="expireAfterDays" Type="Int32" />
+          <Property Name="finePrint" Type="String" MaxLength="512" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_customer_contact_info" FromRole="contact_info" ToRole="customers" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="customerNumber" />
+          </Key>
+          <Property Name="customerNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="customerName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="24" Unicode="true" FixedLength="false" />
+          <Property Name="logoUploaded" Type="Int32" />
+          <NavigationProperty Name="contact_info" Relationship="mygiftcardModel.FK_customer_contact_info" FromRole="customers" ToRole="contact_info" />
+          <NavigationProperty Name="giftcards" Relationship="mygiftcardModel.FK_customer_giftcards" FromRole="customers" ToRole="giftcards" />
+          <NavigationProperty Name="addresses" Relationship="mygiftcardModel.FK_address_customer" FromRole="customer" ToRole="address" />
+        </EntityType>
+        <EntityType Name="giftcard">
+          <Key>
+            <PropertyRef Name="giftcardNumber" />
+          </Key>
+          <Property Name="giftcardNumber" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="customerid" Type="Int32" Nullable="false" />
+          <Property Name="giftcardMessage" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="giftcardRecipient" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="customer" Relationship="mygiftcardModel.FK_customer_giftcards" FromRole="giftcards" ToRole="customers" />
+        </EntityType>
+        <Association Name="FK_customer_contact_info">
+          <End Role="customers" Type="mygiftcardModel.customer" Multiplicity="1" />
+          <End Role="contact_info" Type="mygiftcardModel.contact_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="contact_info">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_giftcards">
+          <End Role="customers" Type="mygiftcardModel.customer" Multiplicity="1" />
+          <End Role="giftcards" Type="mygiftcardModel.giftcard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="giftcards">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_address_customer">
+          <End Type="mygiftcardModel.customer" Role="customer" Multiplicity="1" />
+          <End Type="mygiftcardModel.address" Role="address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerNumber" />
+            </Principal>
+            <Dependent Role="address">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mygiftcardModelStoreContainer" CdmEntityContainer="mygiftcardEntities1">
+          <EntitySetMapping Name="addresses">
+            <EntityTypeMapping TypeName="mygiftcardModel.address">
+              <MappingFragment StoreEntitySet="address">
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="addressNumber" ColumnName="addressNumber" />
+                <ScalarProperty Name="address1" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="postalCode" ColumnName="postalCode" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="contact_info">
+            <EntityTypeMapping TypeName="mygiftcardModel.contact_info">
+              <MappingFragment StoreEntitySet="contact_info">
+                <ScalarProperty Name="contactInfoNumber" ColumnName="contactInfoNumber" />
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="fax" ColumnName="fax" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="mastercardAccepted" ColumnName="mastercardAccepted" />
+                <ScalarProperty Name="discoverAccepted" ColumnName="discoverAccepted" />
+                <ScalarProperty Name="americanExpressAccepted" ColumnName="americanExpressAccepted" />
+                <ScalarProperty Name="visaAccepted" ColumnName="visaAccepted" />
+                <ScalarProperty Name="allowGratuity" ColumnName="allowGratuity" />
+                <ScalarProperty Name="allowMailOption" ColumnName="allowMailOption" />
+                <ScalarProperty Name="shippingCost" ColumnName="shippingCost" />
+                <ScalarProperty Name="expireAfterDays" ColumnName="expireAfterDays" />
+                <ScalarProperty Name="finePrint" ColumnName="finePrint" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="mygiftcardModel.customer">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="customerNumber" ColumnName="customerNumber" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="logoUploaded" ColumnName="logoUploaded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="giftcards">
+            <EntityTypeMapping TypeName="mygiftcardModel.giftcard">
+              <MappingFragment StoreEntitySet="giftcards">
+                <ScalarProperty Name="giftcardNumber" ColumnName="giftcardNumber" />
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="giftcardMessage" ColumnName="giftcardMessage" />
+                <ScalarProperty Name="giftcardRecipient" ColumnName="giftcardRecipient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

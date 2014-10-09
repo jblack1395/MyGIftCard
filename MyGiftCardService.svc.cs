@@ -34,7 +34,7 @@ namespace MyGiftCard
                  new SalonModel() { SalonName = "Name 3", SalonAddress = new Address { AddressOne="home address", City="Knoxville", State="TN"}},
                  new SalonModel() { SalonName = "Name 4", SalonAddress = new Address { AddressOne="work address", City="Knoxville", State="TN"}}
          };
-
+            v.AddRange(giftCardController.retrieveCustomers());
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             return v;
         }
@@ -46,35 +46,42 @@ namespace MyGiftCard
             var username = model.Username;
             var password = model.Password;
 
-            if (model.Salon == "testsalon")
+            try
             {
-                if (password.Equals(new String(username.ToCharArray().Reverse().ToArray())))
+                if (model.Salon == "testsalon")
                 {
-                    token = "{\"token\":\"my token\"}";
-                    statuscode = System.Net.HttpStatusCode.Accepted;
-                    var msg = "";
-                    using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
+                    if (password.Equals(new String(username.ToCharArray().Reverse().ToArray())))
                     {
-                        var properties = OperationContext.Current.IncomingMessageProperties;
-                        var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-                        msg = "my message";
-                        if (endpointProperty != null)
+                        token = "{\"token\":\"my token\"}";
+                        statuscode = System.Net.HttpStatusCode.Accepted;
+                        var msg = "";
+                        using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
                         {
-                            var ip = endpointProperty.Address;
-                            msg = ip.ToString() + ":" + model.Salon + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
+                            var properties = OperationContext.Current.IncomingMessageProperties;
+                            var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+                            msg = "my message";
+                            if (endpointProperty != null)
+                            {
+                                var ip = endpointProperty.Address;
+                                msg = ip.ToString() + ":" + model.Salon + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
+                            }
+                            // Encrypt the string to an array of bytes. 
+                            key = myAes.Key;
+                            iv = myAes.IV;
+                            byte[] encrypted = giftCardController.EncUtil.EncryptStringToBytes_Aes(msg, myAes.Key, myAes.IV);
+                            token = "{\"token\":\"" + System.Convert.ToBase64String(encrypted) + "\", \"msg\":\"" + msg + "\"}";
                         }
-                        // Encrypt the string to an array of bytes. 
-                        key = myAes.Key;
-                        iv = myAes.IV;
-                        byte[] encrypted = giftCardController.EncUtil.EncryptStringToBytes_Aes(msg, myAes.Key, myAes.IV);
-                        token = "{\"token\":\"" + System.Convert.ToBase64String(encrypted) + "\", \"msg\":\"" + msg + "\"}";
+                    }
+                    else
+                    {
+                        statuscode = System.Net.HttpStatusCode.Unauthorized;
+                        token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(username.ToCharArray().Reverse().ToArray()) + "\"}";
                     }
                 }
-                else
-                {
-                    statuscode = System.Net.HttpStatusCode.Unauthorized;
-                    token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(username.ToCharArray().Reverse().ToArray()) + "\"}";
-                }
+            }
+            catch (Exception e)
+            {
+                token = e.StackTrace;
             }
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             WebOperationContext.Current.OutgoingResponse.StatusCode = statuscode;

@@ -20,3 +20,8 @@ C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\M
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\Microsoft.Practices.Unity.RegistrationByConvention.xml
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Debug\MyGiftCard.dll
 C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Debug\MyGiftCard.pdb
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.SqlServer.dll
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\bin\EntityFramework.SqlServer.xml
+C:\Users\James\Documents\Visual Studio 2012\Projects\MyGiftCard\MyGiftCard\obj\Debug\MyGiftCard.csprojResolveAssemblyReference.cache
