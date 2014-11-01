@@ -38,7 +38,7 @@ namespace MyGiftCard
                  new SalonModel() { SalonName = "Name 3", SalonAddress = new Address { AddressOne="home address", City="Knoxville", State="TN"}},
                  new SalonModel() { SalonName = "Name 4", SalonAddress = new Address { AddressOne="work address", City="Knoxville", State="TN"}}
          };
-            v.AddRange(giftCardController.retrieveCustomers());
+            v.AddRange(giftCardController.retrieveClients());
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             MemoryStream stream1 = new MemoryStream();
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<SalonModel>));
@@ -105,18 +105,37 @@ namespace MyGiftCard
                 op = op.Substring(0, indx);
             }
             var s = giftCardController.EncUtil.DecryptToken(token, key, iv);
-            if (s == "my message")
+            string client = "";
+            var ss = s.Split(';');
+            if (ss.Length == 3)
             {
                 WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Accepted;
+                client = ss[0];
             }
             else
             {
                 WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body>");
+                    buf.Append("The token used was invalid, please login again.</body></html>");
+                    byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                    return new MemoryStream(resultBytes);
             }
             MemoryStream stream1 = new MemoryStream();
+            DateTime start = DateTime.Now;
+            DateTime end = DateTime.Now;
+            if (startdate.Equals("empty"))
+            {
+                start = DateTime.Now.AddDays(-60);
+            }
+            if (enddate.Equals("empty"))
+            {
+                end = DateTime.Now;
+            }
             if (op == "pending")
             {
-                var list = new List<PendingOrders>();
+                var list = customer_name.Equals("empty") ? giftCardController.retrieveOrdersByClient<PendingOrders>(Constants.PENDING_ORDER, client, start, end)
+                    : giftCardController.retrieveOrdersByClient<PendingOrders>(Constants.PENDING_ORDER, client, start, end, customer_name);
                 if (returnType == "json")
                 {
                     WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
@@ -143,7 +162,8 @@ namespace MyGiftCard
             }
             else if (op == "processed")
             {
-                var list = new List<ProcessedOrders>();
+                var list = customer_name.Equals("empty") ? giftCardController.retrieveOrdersByClient<ProcessedOrders>(Constants.PENDING_ORDER, client, start, end)
+                    : giftCardController.retrieveOrdersByClient<ProcessedOrders>(Constants.PENDING_ORDER, client, start, end, customer_name);
                 if (returnType == "json")
                 {
                     WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
@@ -170,7 +190,8 @@ namespace MyGiftCard
             }
             else if (op == "redeemed")
             {
-                var list = new List<RedeemeddOrders>();
+                var list = customer_name.Equals("empty") ? giftCardController.retrieveOrdersByClient<RedeemeddOrders>(Constants.PENDING_ORDER, client, start, end)
+                    : giftCardController.retrieveOrdersByClient<RedeemeddOrders>(Constants.PENDING_ORDER, client, start, end, customer_name);
                 if (returnType == "json")
                 {
                     WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";

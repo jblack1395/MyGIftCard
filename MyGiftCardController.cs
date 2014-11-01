@@ -24,9 +24,31 @@ namespace MyGiftCard
                 return encryptionUtil;
             }
         }
-        public List<SalonModel> retrieveCustomers()
+
+        public List<SalonModel> retrieveClients()
         {
-            return dao.retrieveCustomers();
+            throw new NotImplementedException();
+        }
+
+        public List<T> retrieveOrdersByClient<T>(int ordertype, string client, DateTime startdate, DateTime enddate, string filtername)
+        {
+            switch (ordertype)
+            {
+                case Constants.PENDING_ORDER:
+                    var list = dao.retrievePendingOrders(client, startdate, enddate);
+                    return list as List<T>;
+                case Constants.REDEEMED_ORDER:
+                    return dao.retrieveRedeemdOrders(client, startdate, enddate) as List<T>;
+                case Constants.PROCESSED_ORDER:
+                    return dao.retrieveProcessedOrders(client, startdate, enddate) as List<T>;
+                default:
+                    return dao.retrieveOrderDetail(client, startdate, enddate) as List<T>;
+            }
+        }
+
+        public UploadedFile retrieveUploadedFileInfo(string client, string filetype)
+        {
+            throw new NotImplementedException();
         }
     }
 }
