@@ -19,7 +19,7 @@ namespace MyGiftCard
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Json,
                                 UriTemplate = "GetSalonList/")]
-        List<SalonModel> GetSalonList();
+        Stream GetSalonList();
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -41,43 +41,22 @@ namespace MyGiftCard
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Json,
-                                UriTemplate = "SearchOrdersByName/{token}/{search_name}/{startdate=empty}/{enddate=empty}")]
-        List<RedeemeddOrders> SearchOrdersByName(string token, string search_name, string startdate, string enddate);
-
-        [OperationContract]
-        [WebInvoke(Method = "GET",
-            BodyStyle = WebMessageBodyStyle.Bare,
-                                 ResponseFormat = WebMessageFormat.Json,
-                                UriTemplate = "ListPendingOrders/{token}/{startdate=empty}/{enddate=empty}")]
-        List<PendingOrders> ListPendingOrders(string token, string startdate, string enddate);
-
-        [OperationContract]
-        [WebInvoke(Method = "GET",
-            BodyStyle = WebMessageBodyStyle.Bare,
-                                 ResponseFormat = WebMessageFormat.Json,
-                                UriTemplate = "ListProcessedOrders/{token}/{startdate=empty}/{enddate=empty}")]
-        List<ProcessedOrders> ListProcessedOrders(string token, string startdate, string enddate);
-
-        [OperationContract]
-        [WebInvoke(Method = "GET",
-            BodyStyle = WebMessageBodyStyle.Bare,
-                                 ResponseFormat = WebMessageFormat.Json,
-                                UriTemplate = "ListRedeemedOrders/{token}/{startdate=empty}/{enddate=empty}")]
-        List<RedeemeddOrders> ListRedeemedOrders(string token, string startdate, string enddate);
+                                UriTemplate = "ListOrders/{op}/{token}/{startdate=empty}/{enddate=empty}/{customer_name=empty}")]
+        Stream ListOrders(string op, string token, string startdate, string enddate, string customer_name);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Xml,
-                                UriTemplate = "SalonImage/{salon}")]
-        System.IO.Stream SalonImage(string salon);
+                                UriTemplate = "SalonImage/{salon}/{width=100}/{height=100}")]
+        System.IO.Stream SalonImage(string salon, string width, string height);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Json,
                                 UriTemplate = "ListCurrentSalonSettings/{token}")]
-        CurrentSalonDisplaySettings ListCurrentSalonSettings(string token);
+        Stream ListCurrentSalonSettings(string token);
 
         [OperationContract(Name = "Upload")]
         [DataContractFormat]
@@ -85,7 +64,7 @@ namespace MyGiftCard
                    UriTemplate = "Upload",
                    BodyStyle = WebMessageBodyStyle.Bare,
                    ResponseFormat = WebMessageFormat.Json)]
-        UploadedFile Upload(Stream Uploading);
+        string Upload(Stream Uploading);
     }
 
 
@@ -149,7 +128,7 @@ namespace MyGiftCard
         public Double Tip { get; set; }
     }
     [DataContract]
-    public class RedeemeddOrders : PendingOrders
+    public class RedeemeddOrders : ProcessedOrders
     {
         [DataMember]
         public String DateRedeemed { get; set; }

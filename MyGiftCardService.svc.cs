@@ -1,15 +1,19 @@
 ﻿using MyGIftCard;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Web.Script.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace MyGiftCard
 {
@@ -24,7 +28,7 @@ namespace MyGiftCard
             this.giftCardController = controller;
         }
 
-        public List<SalonModel> GetSalonList()
+        public Stream GetSalonList()
         {
 
             var v = new List<SalonModel>() 
@@ -36,7 +40,10 @@ namespace MyGiftCard
          };
             v.AddRange(giftCardController.retrieveCustomers());
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
-            return v;
+            MemoryStream stream1 = new MemoryStream();
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<SalonModel>));
+            ser.WriteObject(stream1, v);
+            return stream1;
         }
 
         public string SalonLogin(AuthModel model)
@@ -88,16 +95,16 @@ namespace MyGiftCard
             return token;
         }
 
-        public List<RedeemeddOrders> SearchOrdersByName(string token, string search_name, string startdate, string enddate)
+        public Stream ListOrders(string op, string token, string startdate, string enddate, string customer_name)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<PendingOrders> ListPendingOrders(string token, string startdate, string enddate)
-        {
+            string returnType = "html";
+            int indx = op.IndexOf(".");
+            if (indx > -1)
+            {
+                returnType = op.Substring(indx + 1);
+                op = op.Substring(0, indx);
+            }
             var s = giftCardController.EncUtil.DecryptToken(token, key, iv);
-            var list = new List<PendingOrders>();
-            WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             if (s == "my message")
             {
                 WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Accepted;
@@ -106,34 +113,119 @@ namespace MyGiftCard
             {
                 WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Unauthorized;
             }
-            return list;
+            MemoryStream stream1 = new MemoryStream();
+            if (op == "pending")
+            {
+                var list = new List<PendingOrders>();
+                if (returnType == "json")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<PendingOrders>));
+                    ser.WriteObject(stream1, list);
+                }
+                else if (returnType == "xml")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/xml";
+                    XmlSerializer ser = new XmlSerializer(typeof(List<PendingOrders>));
+                    Console.WriteLine("Testing for type: {0}", typeof(List<PendingOrders>));
+                    ser.Serialize(XmlWriter.Create(stream1), list);
+                    stream1.Flush();
+                }
+                else
+                {
+                    StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                    buf.Append("</thead><tbody>");
+                    buf.Append("</tbody></table></body></html>");
+                    byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                    stream1 = new MemoryStream(resultBytes);
+                }
+            }
+            else if (op == "processed")
+            {
+                var list = new List<ProcessedOrders>();
+                if (returnType == "json")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<ProcessedOrders>));
+                    ser.WriteObject(stream1, list);
+                }
+                else if (returnType == "xml")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/xml";
+                    XmlSerializer ser = new XmlSerializer(typeof(List<ProcessedOrders>));
+                    Console.WriteLine("Testing for type: {0}", typeof(List<ProcessedOrders>));
+                    ser.Serialize(XmlWriter.Create(stream1), list);
+                    stream1.Flush();
+                }
+                else
+                {
+                    StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                    buf.Append("</thead><tbody>");
+                    buf.Append("</tbody></table></body></html>");
+                    byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                    stream1 = new MemoryStream(resultBytes);
+                }
+            }
+            else if (op == "redeemed")
+            {
+                var list = new List<RedeemeddOrders>();
+                if (returnType == "json")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<RedeemeddOrders>));
+                    ser.WriteObject(stream1, list);
+                }
+                else if (returnType == "xml")
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "application/xml";
+                    XmlSerializer ser = new XmlSerializer(typeof(List<RedeemeddOrders>));
+                    Console.WriteLine("Testing for type: {0}", typeof(List<RedeemeddOrders>));
+                    ser.Serialize(XmlWriter.Create(stream1), list);
+                    stream1.Flush();
+                }
+                else
+                {
+                    StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                    buf.Append("</thead><tbody>");
+                    buf.Append("</tbody></table></body></html>");
+                    byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                    stream1 = new MemoryStream(resultBytes);
+                }
+            }
+            return stream1;
         }
 
-        public List<ProcessedOrders> ListProcessedOrders(string token, string startdate, string enddate)
+        public System.IO.Stream SalonImage(string salon, string width, string height)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<RedeemeddOrders> ListRedeemedOrders(string token, string startdate, string enddate)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public System.IO.Stream SalonImage(string salon)
-        {
-            System.IO.FileStream fs = System.IO.File.OpenRead(@"D:\a.jpg");
+            int w;
+            int.TryParse(width, out w);
+            int h;
+            int.TryParse(height, out h);
+            Bitmap bitmap = new Bitmap(w, h);
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int j = 0; j < bitmap.Height; j++)
+                {
+                    bitmap.SetPixel(i, j, (Math.Abs(i - j) < 2) ? Color.Blue : Color.Yellow);
+                }
+            }
+            MemoryStream ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            ms.Position = 0;
             WebOperationContext.Current.OutgoingResponse.ContentType = "image/jpeg";
-            return fs;
+            return ms;
         }
 
-        public CurrentSalonDisplaySettings ListCurrentSalonSettings(string token)
+        public Stream ListCurrentSalonSettings(string token)
         {
             throw new NotImplementedException();
         }
 
 
-        public UploadedFile Upload(System.IO.Stream Uploading)
+        public string Upload(System.IO.Stream Uploading)
         {
             throw new NotImplementedException();
         }

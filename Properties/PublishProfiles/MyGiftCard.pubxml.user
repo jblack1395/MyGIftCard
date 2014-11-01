@@ -30,7 +30,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/06/2014 14:05:28</publishTime>
     </File>
     <File Include="bin/MyGiftCard.dll">
-      <publishTime>10/09/2014 11:50:43</publishTime>
+      <publishTime>11/01/2014 09:16:11</publishTime>
     </File>
     <File Include="bin/Unity.Wcf.dll">
       <publishTime>10/06/2014 14:10:35</publishTime>
@@ -57,7 +57,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/06/2014 14:10:35</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/08/2014 22:49:30</publishTime>
+      <publishTime>10/31/2014 20:18:19</publishTime>
     </File>
   </ItemGroup>
 </Project>
