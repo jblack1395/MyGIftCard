@@ -48,8 +48,8 @@ namespace MyGiftCard
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Xml,
-                                UriTemplate = "SalonImage/{salon}/{width=100}/{height=100}")]
-        System.IO.Stream SalonImage(string salon, string width, string height);
+                                UriTemplate = "SalonImage/{salon}/{image_type}/{width_percentage = 100")]
+        System.IO.Stream SalonImage(string salon, string image_type, string width_percentage);
 
         [OperationContract]
         [WebInvoke(Method = "GET",
@@ -116,6 +116,8 @@ namespace MyGiftCard
         public String Status { get; set; }
         [DataMember]
         public String Actions { get; set; }
+        [DataMember]
+        public String SalonName { get; set; }
     }
     [DataContract]
     public class ProcessedOrders : PendingOrders
@@ -266,5 +268,11 @@ namespace MyGiftCard
 
     [DataMember]
     public string FileName { get; set; }
+
+    [DataMember]
+    public int Height { get; set; }
+
+    [DataMember]
+    public int Width { get; set; }
   }  
 }

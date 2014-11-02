@@ -219,20 +219,11 @@ namespace MyGiftCard
             return stream1;
         }
 
-        public System.IO.Stream SalonImage(string salon, string width, string height)
+        public System.IO.Stream SalonImage(string salon, string image_type, string width_percentage)
         {
             int w;
-            int.TryParse(width, out w);
-            int h;
-            int.TryParse(height, out h);
-            Bitmap bitmap = new Bitmap(w, h);
-            for (int i = 0; i < bitmap.Width; i++)
-            {
-                for (int j = 0; j < bitmap.Height; j++)
-                {
-                    bitmap.SetPixel(i, j, (Math.Abs(i - j) < 2) ? Color.Blue : Color.Yellow);
-                }
-            }
+            int.TryParse(width_percentage, out w);
+            var bitmap = giftCardController.retrieveUploadedFile(salon, image_type, w);
             MemoryStream ms = new MemoryStream();
             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             ms.Position = 0;

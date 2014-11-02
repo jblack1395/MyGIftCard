@@ -14,7 +14,7 @@ namespace MyGIftCard
         List<RedeemeddOrders> retrieveRedeemdOrders(string client, DateTime startdate, DateTime enddate, string filteredNam = null);
         List<ProcessedOrders> retrieveProcessedOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null);
         List<OrderDetail> retrieveOrderDetail(string client, DateTime startdate, DateTime enddate, string filteredName = null);
-        UploadedFile retrienveLogoForClient(string client);
-        UploadedFile retrienveBackgroundForClient(string client);
+        UploadedFile retrieveLogoFileInfoForClient(string client);
+        UploadedFile retrieveBackgroundFileInfoForClient(string client);
     }
 }

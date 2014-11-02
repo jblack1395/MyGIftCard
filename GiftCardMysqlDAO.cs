@@ -1,6 +1,7 @@
 ﻿using MyGiftCard;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -10,38 +11,95 @@ namespace MyGIftCard
     {
         public List<SalonModel> retrieveClients()
         {
-            throw new NotImplementedException();
+            return new List<SalonModel>()
+            {
+                new SalonModel() {
+                    SalonName = "Test name 1"
+                },
+                new SalonModel() {
+                    SalonName = "Test name 2"
+                },
+                new SalonModel() {
+                    SalonName = "Test name 3"
+                }
+            };
         }
-
-        public UploadedFile retrienveLogoForClient(string client)
-        {
-            throw new NotImplementedException();
-        }
-
-        public UploadedFile retrienveBackgroundForClient(string client)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public List<PendingOrders> retrievePendingOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
-            throw new NotImplementedException();
+            return new List<PendingOrders>()
+            {
+                new PendingOrders() {
+                    OrderDate = startdate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 1"
+                },
+                new PendingOrders() {
+                    OrderDate =  enddate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 3"
+                }
+            };
         }
 
         public List<RedeemeddOrders> retrieveRedeemdOrders(string client, DateTime startdate, DateTime enddate, string filteredNam = null)
         {
-            throw new NotImplementedException();
+            return new List<RedeemeddOrders>()
+            {
+                new RedeemeddOrders() {
+                    OrderDate = startdate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 1"
+                },
+                new RedeemeddOrders() {
+                    OrderDate =  enddate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 3"
+                }
+            };
         }
 
         public List<ProcessedOrders> retrieveProcessedOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
-            throw new NotImplementedException();
+            return new List<ProcessedOrders>()
+            {
+                new ProcessedOrders() {
+                    OrderDate = startdate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 1"
+                },
+                new ProcessedOrders() {
+                    OrderDate =  enddate.ToString("YYYYMMDD"),
+                    SalonName = "Test name 3"
+                }
+            };
         }
 
         public List<OrderDetail> retrieveOrderDetail(string client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
-            throw new NotImplementedException();
+            return new List<OrderDetail>()
+            {
+                new OrderDetail() {
+                    SalonName = "Test name 2"
+                }
+            };
+        }
+
+
+        public UploadedFile retrieveLogoFileInfoForClient(string client)
+        {
+            return new UploadedFile() {
+                FileName = "logo.png",
+                FilePath = "C:\\Temp\\",
+                Height = 100,
+                Width = 100
+            };
+        }
+
+        public UploadedFile retrieveBackgroundFileInfoForClient(string client)
+        {
+            return new UploadedFile()
+            {
+                FileName = "background.png",
+                FilePath = "C:\\Temp\\",
+                Height = 100,
+                Width = 100
+            };
         }
     }
 }

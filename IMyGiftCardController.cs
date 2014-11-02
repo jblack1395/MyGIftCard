@@ -1,6 +1,7 @@
 ﻿using MyGIftCard;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,6 @@ namespace MyGiftCard
         IEncryptionUtil EncUtil { get; }
         List<SalonModel> retrieveClients();
         List<T> retrieveOrdersByClient<T>(int ordertype, string client, DateTime startdate, DateTime enddate, string filtername = null);
-        UploadedFile retrieveUploadedFileInfo(string client, string filetype);
+        Image retrieveUploadedFile(string client, string filetype, int width_percentage);
     }
 }

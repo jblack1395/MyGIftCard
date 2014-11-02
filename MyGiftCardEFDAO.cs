@@ -13,16 +13,6 @@ namespace MyGIftCard
             throw new NotImplementedException();
         }
 
-        public UploadedFile retrienveLogoForClient(string client)
-        {
-            throw new NotImplementedException();
-        }
-
-        public UploadedFile retrienveBackgroundForClient(string client)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<PendingOrders> retrievePendingOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
             throw new NotImplementedException();
@@ -39,6 +29,17 @@ namespace MyGIftCard
         }
 
         public List<OrderDetail> retrieveOrderDetail(string client, DateTime startdate, DateTime enddate, string filteredName = null)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public UploadedFile retrieveLogoFileInfoForClient(string client)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UploadedFile retrieveBackgroundFileInfoForClient(string client)
         {
             throw new NotImplementedException();
         }
