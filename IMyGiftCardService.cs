@@ -47,6 +47,13 @@ namespace MyGiftCard
         [OperationContract]
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
+                                 ResponseFormat = WebMessageFormat.Json,
+                                UriTemplate = "OrderReports/{op}/{token}/{enddate=empty}/{startdate=empty}/{custom1=empty}/{custom2=empty}")]
+        Stream OrderReports(string op, string token, string enddate, string startdate, string custom1, string custom2);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Xml,
                                 UriTemplate = "SalonImage/{salon}/{image_type}/{width_percentage = 100")]
         System.IO.Stream SalonImage(string salon, string image_type, string width_percentage);

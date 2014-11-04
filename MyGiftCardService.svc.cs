@@ -97,6 +97,18 @@ namespace MyGiftCard
 
         public Stream ListOrders(string op, string token, string startdate, string enddate, string customer_name)
         {
+            if (op.ToLower().StartsWith("help"))
+            {
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                buf.Append("<tr><th>Order Name</th><th>Description</th></tr>");
+                buf.Append("</thead><tbody>");
+                buf.Append("<tr><td>ReportsByMonth</td><td>Look at the breakdown by month, default values is the past two months to today</td></tr>");
+                buf.Append("<tr><td>ReportsByMonthByCustomer</td><td>Look at the breakdown by month, looking at each customer individually, default values is the past two months to today</td></tr>");
+                buf.Append("</tbody></table></body></html>");
+                byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                return new MemoryStream(resultBytes);
+            }
             string returnType = "html";
             int indx = op.IndexOf(".");
             if (indx > -1)
@@ -250,5 +262,45 @@ namespace MyGiftCard
             return orderNumber;
         }
 
+
+        Stream IMyGiftCardService.GetSalonList()
+        {
+            throw new NotImplementedException();
+        }
+
+        string IMyGiftCardService.SalonLogin(AuthModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IMyGiftCardService.GiftCardOrder(OrderDetail order)
+        {
+            throw new NotImplementedException();
+        }
+
+        Stream IMyGiftCardService.ListOrders(string op, string token, string startdate, string enddate, string customer_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        Stream IMyGiftCardService.OrderReports(string op, string token, string enddate, string startdate, string custom1, string custom2)
+        {
+            throw new NotImplementedException();
+        }
+
+        Stream IMyGiftCardService.SalonImage(string salon, string image_type, string width_percentage)
+        {
+            throw new NotImplementedException();
+        }
+
+        Stream IMyGiftCardService.ListCurrentSalonSettings(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IMyGiftCardService.Upload(Stream Uploading)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
