@@ -106,7 +106,7 @@ namespace MyGiftCard
                 buf.Append("<tr><td>ReportsByMonthByCustomer</td><td>Look at the breakdown by month, looking at each customer individually, default values is the past two months to today</td></tr>");
                 buf.Append("</tbody></table></body></html>");
                 byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
                 return new MemoryStream(resultBytes);
             }
             string returnType = "html";
@@ -285,6 +285,18 @@ namespace MyGiftCard
 
         Stream IMyGiftCardService.OrderReports(string op, string token, string enddate, string startdate, string custom1, string custom2)
         {
+            if (op.ToLower().StartsWith("help"))
+            {
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                buf.Append("<tr><th>Order Name</th><th>Description</th></tr>");
+                buf.Append("</thead><tbody>");
+                buf.Append("<tr><td>ReportsByMonth</td><td>Look at the breakdown by month, default values is the past two months to today</td></tr>");
+                buf.Append("<tr><td>ReportsByMonthByCustomer</td><td>Look at the breakdown by month, looking at each customer individually, default values is the past two months to today</td></tr>");
+                buf.Append("</tbody></table></body></html>");
+                byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                return new MemoryStream(resultBytes);
+            }
             throw new NotImplementedException();
         }
 
