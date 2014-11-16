@@ -107,6 +107,41 @@ namespace MyGiftCard
         }
     }
     [DataContract]
+    public partial class CustomerAddress
+    {
+        [DataMember]
+        public String AddressOne { set; get; }
+        [DataMember]
+        public String AddressTwo { set; get; }
+        [DataMember]
+        public String City { set; get; }
+        [DataMember]
+        public String State { set; get; }
+        [DataMember]
+        public String Zip { set; get; }
+        [DataMember]
+        public String County { set; get; }
+    }
+
+    [DataContract]
+    public partial class Purchaser
+    {
+        [DataMember]
+        public String Name { set; get; }
+        [DataMember]
+        public CustomerAddress Address { set; get; }
+    }
+
+    [DataContract]
+    public partial class Recipient
+    {
+        [DataMember]
+        public String Name { set; get; }
+        [DataMember]
+        public CustomerAddress Address { set; get; }
+    }
+
+    [DataContract]
     public class PendingOrders
     {
         [DataMember]
@@ -114,9 +149,9 @@ namespace MyGiftCard
         [DataMember]
         public String OrderDate { get; set; }
         [DataMember]
-        public String Purchaser { get; set; }
+        public Purchaser Purchaser { get; set; }
         [DataMember]
-        public String Recipient { get; set; }
+        public Recipient Recipient { get; set; }
         [DataMember]
         public Double Total { get; set; }
         [DataMember]
@@ -124,17 +159,29 @@ namespace MyGiftCard
         [DataMember]
         public String Actions { get; set; }
         [DataMember]
-        public String SalonName { get; set; }
-    }
-    [DataContract]
-    public class ProcessedOrders : PendingOrders
-    {
+        public String CompanyName { get; set; }
         [DataMember]
         public String[] ItemsOrderedList { get; set; }
         [DataMember]
         public Double ShippingAndHandling { get; set; }
         [DataMember]
         public Double Tip { get; set; }
+        [DataMember]
+        public String Message { get; set; }
+        [DataMember]
+        public String BillingInfo { get; set; }
+        [DataMember]
+        public String Email { get; set; }
+        [DataMember]
+        public CreditCardInfo CardInfo { get; set; }
+    }
+    [DataContract]
+    public class ProcessedOrders : PendingOrders
+    {
+        [DataMember]
+        public String ProcessedOn { get; set; }
+        [DataMember]
+        public String AuthenticationCode { get; set; }
     }
     [DataContract]
     public class RedeemeddOrders : ProcessedOrders
@@ -158,29 +205,17 @@ namespace MyGiftCard
     public class OrderDetail : RedeemeddOrders
     {
         [DataMember]
-        public String Message { get; set; }
-        [DataMember]
         public String DeliverBy { get; set; }
-        [DataMember]
-        public String BillingInfo { get; set; }
-        [DataMember]
-        public String Email { get; set; }
-        [DataMember]
-        public CreditCardInfo CardInfo { get; set; }
-        [DataMember]
-        public String ProcessedOn { get; set; }
-        [DataMember]
-        public String AuthenticationCode { get; set; }
     }
     [DataContract]
-    public partial class SalonModel
+    public partial class CompanyModel
     {
         [DataMember]
-        public String SalonName { set; get; }
+        public String CompanyName { set; get; }
         [DataMember]
-        public Address SalonAddress { set; get; }
+        public Address CompanyAddress { set; get; }
         [DataMember]
-        public ContactInfo SalonContactInfo { set; get; }
+        public ContactInfo CompanyContactInfo { set; get; }
         [DataMember]
         public Boolean VisaAccepted { get; set; }
         [DataMember]
@@ -191,12 +226,6 @@ namespace MyGiftCard
         public Boolean DiscoverAccepted { get; set; }
         [DataMember]
         public String PayPalID { get; set; }
-        [DataMember]
-        public String AuthorizeDotNetAPILoginID { get; set; }
-        [DataMember]
-        public String AuthorizeDotNetPassword { get; set; }
-        [DataMember]
-        public Boolean AuthorizeDotNetLive { get; set; }
         [DataMember]
         public Boolean? AllowMailOption { get; set; }
         [DataMember]
@@ -214,6 +243,7 @@ namespace MyGiftCard
             AllowGratuity = (AllowGratuity == null ? false : AllowGratuity);
             AllowMailOption = (AllowMailOption == null ? false : AllowMailOption);
             ExpireAfterDays = (ExpireAfterDays == null ? 0 : ExpireAfterDays);
+            ShippingCost = (ShippingCost == null ? 0 : ShippingCost);
         }
     }
     [DataContract]
@@ -249,10 +279,10 @@ namespace MyGiftCard
         public String County { set; get; }
     }
     [DataContract]
-    public partial class CurrentSalonDisplaySettings
+    public partial class CurrentCompanyDisplaySettings
     {
         [DataMember]
-        public String SalonName { get; set; }
+        public String CompanyName { get; set; }
         [DataMember]
         public String CurrentThemeName { set; get; }
         [DataMember]

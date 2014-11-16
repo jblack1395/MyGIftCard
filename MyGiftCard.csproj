@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="EncryptionUtil.cs" />
+    <Compile Include="GiftCardMSSQLDAO.cs" />
     <Compile Include="GiftCardMysqlDAO.cs" />
     <Compile Include="IEncryptionUtil.cs" />
     <Compile Include="IGiftCardDAO.cs" />

@@ -30,7 +30,7 @@ namespace MyGiftCard
             }
         }
 
-        public List<SalonModel> retrieveClients()
+        public List<CompanyModel> retrieveClients()
         {
             return dao.retrieveClients();
         }

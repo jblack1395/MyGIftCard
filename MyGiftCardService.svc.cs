@@ -31,17 +31,17 @@ namespace MyGiftCard
         public Stream GetSalonList()
         {
 
-            var v = new List<SalonModel>() 
+            var v = new List<CompanyModel>() 
          { 
-                 new SalonModel() { SalonName = "Name 1", SalonAddress = new Address { AddressOne="address one", City="Knoxville", State="TN"}},
-                 new SalonModel() { SalonName = "Name 2", SalonAddress = new Address { AddressOne="some other address", City="Knoxville", State="TN"}},
-                 new SalonModel() { SalonName = "Name 3", SalonAddress = new Address { AddressOne="home address", City="Knoxville", State="TN"}},
-                 new SalonModel() { SalonName = "Name 4", SalonAddress = new Address { AddressOne="work address", City="Knoxville", State="TN"}}
+                 new CompanyModel() { CompanyName = "Name 1", CompanyAddress = new Address { AddressOne="address one", City="Knoxville", State="TN"}},
+                 new CompanyModel() { CompanyName = "Name 2", CompanyAddress = new Address { AddressOne="some other address", City="Knoxville", State="TN"}},
+                 new CompanyModel() { CompanyName = "Name 3", CompanyAddress = new Address { AddressOne="home address", City="Knoxville", State="TN"}},
+                 new CompanyModel() { CompanyName = "Name 4", CompanyAddress = new Address { AddressOne="work address", City="Knoxville", State="TN"}}
          };
             v.AddRange(giftCardController.retrieveClients());
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             MemoryStream stream1 = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<SalonModel>));
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<CompanyModel>));
             ser.WriteObject(stream1, v);
             return stream1;
         }

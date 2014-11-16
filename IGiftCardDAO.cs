@@ -9,7 +9,7 @@ namespace MyGIftCard
 {
     public interface IGiftCardDAO
     {
-        List<SalonModel> retrieveClients();
+        List<CompanyModel> retrieveClients();
         List<PendingOrders> retrievePendingOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null);
         List<RedeemeddOrders> retrieveRedeemdOrders(string client, DateTime startdate, DateTime enddate, string filteredNam = null);
         List<ProcessedOrders> retrieveProcessedOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null);

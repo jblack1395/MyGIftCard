@@ -8,7 +8,7 @@ namespace MyGIftCard
 {
     public class MyGiftCardEFDAO : IGiftCardDAO
     {
-        public List<SalonModel> retrieveClients()
+        public List<CompanyModel> retrieveClients()
         {
             throw new NotImplementedException();
         }
