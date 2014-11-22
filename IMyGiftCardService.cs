@@ -145,6 +145,8 @@ namespace MyGiftCard
     public class PendingOrders
     {
         [DataMember]
+        public int CompanyId { get; set; }
+        [DataMember]
         public String OrderNumber { get; set; }
         [DataMember]
         public String OrderDate { get; set; }
@@ -161,7 +163,7 @@ namespace MyGiftCard
         [DataMember]
         public String CompanyName { get; set; }
         [DataMember]
-        public String[] ItemsOrderedList { get; set; }
+        public List<Product> ItemsOrderedList { get; set; }
         [DataMember]
         public Double ShippingAndHandling { get; set; }
         [DataMember]
@@ -174,7 +176,18 @@ namespace MyGiftCard
         public String Email { get; set; }
         [DataMember]
         public CreditCardInfo CardInfo { get; set; }
+        [DataMember]
+        public DeliveryMethod DeliveryInfo { get; set; }
     }
+    [DataContract]
+    public class DeliveryMethod
+    {
+        [DataMember]
+        public String Email { get; set; }
+        [DataMember]
+        public Address DeliveryAddress { get; set; }
+    }
+
     [DataContract]
     public class ProcessedOrders : PendingOrders
     {
@@ -193,6 +206,8 @@ namespace MyGiftCard
     public class CreditCardInfo
     {
         [DataMember]
+        public Address BillingInfo { get; set; }
+        [DataMember]
         public String CardType { get; set; }
         [DataMember]
         public String CardNumber { get; set; }
@@ -208,8 +223,21 @@ namespace MyGiftCard
         public String DeliverBy { get; set; }
     }
     [DataContract]
+    public class Product
+    {
+        [DataMember]
+        public int ProductId { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public float Price { get; set; }
+    }
+
+    [DataContract]
     public partial class CompanyModel
     {
+        [DataMember]
+        public Int32? Id { set; get; }
         [DataMember]
         public String CompanyName { set; get; }
         [DataMember]

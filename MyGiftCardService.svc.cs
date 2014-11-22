@@ -19,8 +19,6 @@ namespace MyGiftCard
 {
     public class MyGiftCardService : IMyGiftCardService
     {
-        private static byte[] key;
-        private static byte[] iv;
         private readonly IMyGiftCardController giftCardController;
 
         public MyGiftCardService(IMyGiftCardController controller)
@@ -48,47 +46,27 @@ namespace MyGiftCard
 
         public string SalonLogin(AuthModel model)
         {
-            String token = "{\"error\":\"Not a valid Salon name\"}"; ;
             var statuscode = System.Net.HttpStatusCode.Unauthorized;
-            var username = model.Username;
-            var password = model.Password;
-
-            try
+            var properties = OperationContext.Current.IncomingMessageProperties;
+            var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+            var msg = "my message";
+            if (endpointProperty != null)
             {
-                if (model.Salon == "testsalon")
-                {
-                    if (password.Equals(new String(username.ToCharArray().Reverse().ToArray())))
-                    {
-                        token = "{\"token\":\"my token\"}";
-                        statuscode = System.Net.HttpStatusCode.Accepted;
-                        var msg = "";
-                        using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
-                        {
-                            var properties = OperationContext.Current.IncomingMessageProperties;
-                            var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-                            msg = "my message";
-                            if (endpointProperty != null)
-                            {
-                                var ip = endpointProperty.Address;
-                                msg = ip.ToString() + ":" + model.Salon + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
-                            }
-                            // Encrypt the string to an array of bytes. 
-                            key = myAes.Key;
-                            iv = myAes.IV;
-                            byte[] encrypted = giftCardController.EncUtil.EncryptStringToBytes_Aes(msg, myAes.Key, myAes.IV);
-                            token = "{\"token\":\"" + System.Convert.ToBase64String(encrypted) + "\", \"msg\":\"" + msg + "\"}";
-                        }
-                    }
-                    else
-                    {
-                        statuscode = System.Net.HttpStatusCode.Unauthorized;
-                        token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(username.ToCharArray().Reverse().ToArray()) + "\"}";
-                    }
-                }
+                var ip = endpointProperty.Address;
+                msg = ip.ToString() + ":" + model.Salon + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
             }
-            catch (Exception e)
+
+            var token = giftCardController.authenticateLogin(model, msg);
+            if (!String.IsNullOrWhiteSpace(token) && token.Length > 8)
             {
-                token = e.StackTrace;
+                if (token.Substring(0, 7).Contains("tok"))
+                {
+                    statuscode = System.Net.HttpStatusCode.Accepted;
+                }
+                else
+                {
+                    statuscode = System.Net.HttpStatusCode.Unauthorized;
+                }
             }
             WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
             WebOperationContext.Current.OutgoingResponse.StatusCode = statuscode;
@@ -116,7 +94,7 @@ namespace MyGiftCard
                 returnType = op.Substring(indx + 1);
                 op = op.Substring(0, indx);
             }
-            var s = giftCardController.EncUtil.DecryptToken(token, key, iv);
+            var s = giftCardController.verifyToken(token);
             string client = "";
             var ss = s.Split(';');
             if (ss.Length == 3)

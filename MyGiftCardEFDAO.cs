@@ -43,5 +43,22 @@ namespace MyGIftCard
         {
             throw new NotImplementedException();
         }
+
+
+        public bool UpdateSalon(CompanyModel input)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<string> RetrieveCategoriesBySalon(string company_name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> RetrieveProductsByCompanyCategory(string company_name, string category_name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

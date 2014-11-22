@@ -7,12 +7,16 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 
 namespace MyGiftCard
 {
     public class MyGiftCardController : IMyGiftCardController
     {
+        private static byte[] key;
+        private static byte[] iv;
+
         public readonly IEncryptionUtil encryptionUtil;
         public readonly IGiftCardDAO dao;
 
@@ -22,12 +26,37 @@ namespace MyGiftCard
             this.encryptionUtil = encryptionUtil;
             this.dao = dao;
         }
-        public IEncryptionUtil EncUtil
+
+        public string authenticateLogin(AuthModel model, string msg)
         {
-            get
+            String token = "";
+            try
             {
-                return encryptionUtil;
+                if (model.Salon == "testsalon")
+                {
+                    if (model.Password.Equals(new String(model.Username.ToCharArray().Reverse().ToArray())))
+                    {
+                        token = "{\"token\":\"my token\"}";
+                        using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
+                        {
+                            // Encrypt the string to an array of bytes. 
+                            key = myAes.Key;
+                            iv = myAes.IV;
+                            byte[] encrypted = encryptionUtil.EncryptStringToBytes_Aes(msg, myAes.Key, myAes.IV);
+                            token = "{\"token\":\"" + System.Convert.ToBase64String(encrypted) + "\", \"msg\":\"" + msg + "\"}";
+                        }
+                    }
+                    else
+                    {
+                        token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(model.Username.ToCharArray().Reverse().ToArray()) + "\"}";
+                    }
+                }
             }
+            catch (Exception e)
+            {
+                token = e.StackTrace;
+            }
+            return token;
         }
 
         public List<CompanyModel> retrieveClients()
@@ -84,6 +113,12 @@ namespace MyGiftCard
             }
 
             return destImage;
+        }
+
+
+        public string verifyToken(string token)
+        {
+            return encryptionUtil.DecryptToken(token, key, iv);
         }
     }
 }
