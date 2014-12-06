@@ -27,13 +27,11 @@ namespace MyGiftCard
             this.dao = dao;
         }
 
-        public string authenticateLogin(AuthModel model, string msg)
+        public string authenticateLogin(AuthModel model, string msg, int salonId)
         {
             String token = "";
             try
             {
-                if (model.Salon == "testsalon")
-                {
                     if (model.Password.Equals(new String(model.Username.ToCharArray().Reverse().ToArray())))
                     {
                         token = "{\"token\":\"my token\"}";
@@ -51,7 +49,6 @@ namespace MyGiftCard
                         token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(model.Username.ToCharArray().Reverse().ToArray()) + "\"}";
                     }
                 }
-            }
             catch (Exception e)
             {
                 token = e.StackTrace;
@@ -64,7 +61,7 @@ namespace MyGiftCard
             return dao.retrieveClients();
         }
 
-        public List<T> retrieveOrdersByClient<T>(int ordertype, string client, DateTime startdate, DateTime enddate, string filtername)
+        public List<T> retrieveOrdersByClient<T>(int ordertype, int client, DateTime startdate, DateTime enddate, string filtername)
         {
             switch (ordertype)
             {
@@ -80,7 +77,7 @@ namespace MyGiftCard
             }
         }
 
-        public Image retrieveUploadedFile(string client, string filetype, int width_percentage)
+        public Image retrieveUploadedFile(int client, string filetype, int width_percentage)
         {
             UploadedFile uploadedFile = null;
             if (filetype.Equals("logo"))

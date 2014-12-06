@@ -44,19 +44,24 @@ namespace MyGiftCard
             return stream1;
         }
 
-        public string SalonLogin(AuthModel model)
+        public string SalonLogin(string salon_id, AuthModel model)
         {
             var statuscode = System.Net.HttpStatusCode.Unauthorized;
+            int id;
+            if (!Int32.TryParse(salon_id, out id))
+            {
+                return "Salon ID is not valid";
+            }
             var properties = OperationContext.Current.IncomingMessageProperties;
             var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
             var msg = "my message";
             if (endpointProperty != null)
             {
                 var ip = endpointProperty.Address;
-                msg = ip.ToString() + ":" + model.Salon + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
+                msg = ip.ToString() + ":" + salon_id + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
             }
-
-            var token = giftCardController.authenticateLogin(model, msg);
+            
+            var token = giftCardController.authenticateLogin(model, msg, id);
             if (!String.IsNullOrWhiteSpace(token) && token.Length > 8)
             {
                 if (token.Substring(0, 7).Contains("tok"))
@@ -95,12 +100,12 @@ namespace MyGiftCard
                 op = op.Substring(0, indx);
             }
             var s = giftCardController.verifyToken(token);
-            string client = "";
+            int client = 0;
             var ss = s.Split(';');
             if (ss.Length == 3)
             {
                 WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Accepted;
-                client = ss[0];
+                int.TryParse(ss[0], out client);
             }
             else
             {
@@ -209,7 +214,7 @@ namespace MyGiftCard
             return stream1;
         }
 
-        public System.IO.Stream SalonImage(string salon, string image_type, string width_percentage)
+        public System.IO.Stream SalonImage(int salon, string image_type, string width_percentage)
         {
             int w;
             int.TryParse(width_percentage, out w);
@@ -246,7 +251,7 @@ namespace MyGiftCard
             throw new NotImplementedException();
         }
 
-        string IMyGiftCardService.SalonLogin(AuthModel model)
+        string IMyGiftCardService.SalonLogin(string salon_id, AuthModel model)
         {
             throw new NotImplementedException();
         }

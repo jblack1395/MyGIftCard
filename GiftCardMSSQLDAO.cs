@@ -20,7 +20,7 @@ namespace MyGiftCard
             return this;
         }
 
-        public void InsertPendingOrder(PendingOrders input)
+        public int? InsertPendingOrder(PendingOrders input)
         {
             var myconn = new SqlConnection(conn);
             int customerId = 0;
@@ -158,6 +158,7 @@ namespace MyGiftCard
                     });
                 }
             }
+            return id;
         }
  
         public List<String> RetrieveCategoriesBySalon(String company_name)
@@ -313,7 +314,7 @@ namespace MyGiftCard
             return list;
         }
 
-        public List<MyGiftCard.PendingOrders> retrievePendingOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null)
+        public List<MyGiftCard.PendingOrders> retrievePendingOrders(int client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
             var sql = "SELECT o.id,o.order_number,o.order_date,o.total,o.status,o.actions,o.shipping,o.tip,o.message, c.company_name, " +
                 "p.name, r.name," +
@@ -359,7 +360,7 @@ namespace MyGiftCard
             return list;
         }
 
-        public List<MyGiftCard.RedeemeddOrders> retrieveRedeemdOrders(string client, DateTime startdate, DateTime enddate, string filteredNam = null)
+        public List<MyGiftCard.RedeemeddOrders> retrieveRedeemdOrders(int client, DateTime startdate, DateTime enddate, string filteredNam = null)
         {
             var sql = "SELECT o.id,o.order_number,o.order_date,o.total,o.status,o.actions,o.shipping,o.tip,o.message, c.company_name, " +
                 "p.name, r.name," +
@@ -405,7 +406,7 @@ namespace MyGiftCard
             return list;
         }
 
-        public List<MyGiftCard.ProcessedOrders> retrieveProcessedOrders(string client, DateTime startdate, DateTime enddate, string filteredName = null)
+        public List<MyGiftCard.ProcessedOrders> retrieveProcessedOrders(int client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
             var sql = "SELECT o.id,o.order_number,o.order_date,o.total,o.status,o.actions,o.shipping,o.tip,o.message, c.company_name, " +
                 "p.name, r.name," +
@@ -451,7 +452,7 @@ namespace MyGiftCard
             return list;
         }
 
-        public List<MyGiftCard.OrderDetail> retrieveOrderDetail(string client, DateTime startdate, DateTime enddate, string filteredName = null)
+        public List<MyGiftCard.OrderDetail> retrieveOrderDetail(int client, DateTime startdate, DateTime enddate, string filteredName = null)
         {
             var sql = "SELECT o.id,o.order_number,o.order_date,o.total,o.status,o.actions,o.shipping,o.tip,o.message, c.company_name, " +
                 "p.name, r.name," +
@@ -497,12 +498,67 @@ namespace MyGiftCard
             return list;
         }
 
-        public MyGiftCard.UploadedFile retrieveLogoFileInfoForClient(string client)
+        public MyGiftCard.UploadedFile retrieveLogoFileInfoForClient(int client)
         {
             throw new NotImplementedException();
         }
 
-        public MyGiftCard.UploadedFile retrieveBackgroundFileInfoForClient(string client)
+        public MyGiftCard.UploadedFile retrieveBackgroundFileInfoForClient(int client)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public CurrentCompanyDisplaySettings RetrieveDisplaySettings(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int? CreateCategoryForCompany(int companyId, string categoryName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> RetrieveCategoriesByCompany(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int? CreateProductForCategoryByCompany(int categoryId, string productName, float price)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> RetrieveProductsBySalonCategory(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SaveAuthInfo(int companyId, string username, byte[] passwordHash)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckPassword(int companyId, string username, byte[] passwordHash)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int? SaveUploadedFile(UploadedFile input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UploadedFile RetrieveLogoFileInfoForClient(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool UpdateCompanySettings(CurrentCompanyDisplaySettings info, int? logoId)
         {
             throw new NotImplementedException();
         }

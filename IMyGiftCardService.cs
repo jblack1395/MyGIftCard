@@ -11,7 +11,7 @@ namespace MyGiftCard
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IGiftCertProService" in both code and config file together.
     [ServiceContract]
-//    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    //    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public interface IMyGiftCardService
     {
         [OperationContract]
@@ -23,11 +23,11 @@ namespace MyGiftCard
 
         [OperationContract]
         [WebInvoke(Method = "POST",
-            UriTemplate = "SalonLogin",
+            UriTemplate = "SalonLogin/{salon_id}",
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             ResponseFormat = WebMessageFormat.Json)]
-        string SalonLogin(AuthModel model);
+        string SalonLogin(string salon_id, AuthModel model);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -79,8 +79,6 @@ namespace MyGiftCard
     [DataContract]
     public class AuthModel
     {
-        [DataMember]
-        public string Salon { get; set; }
         [DataMember]
         public string Username { get; set; }
         [DataMember]
@@ -310,6 +308,10 @@ namespace MyGiftCard
     public partial class CurrentCompanyDisplaySettings
     {
         [DataMember]
+        public int? CompanyId { get; set; }
+        [DataMember]
+        public int? Id { get; set; }
+        [DataMember]
         public String CompanyName { get; set; }
         [DataMember]
         public String CurrentThemeName { set; get; }
@@ -323,21 +325,23 @@ namespace MyGiftCard
     }
 
     [DataContract]
-  public class UploadedFile
-  {
-    [DataMember]
-    public string FilePath { get; set; }
+    public class UploadedFile
+    {
+        [DataMember]
+        public int CompanyId { get; set; }
+        [DataMember]
+        public string FilePath { get; set; }
 
-    [DataMember]
-    public string FileLength { get; set; }
+        [DataMember]
+        public int FileLength { get; set; }
 
-    [DataMember]
-    public string FileName { get; set; }
+        [DataMember]
+        public string FileName { get; set; }
 
-    [DataMember]
-    public int Height { get; set; }
+        [DataMember]
+        public int Height { get; set; }
 
-    [DataMember]
-    public int Width { get; set; }
-  }  
+        [DataMember]
+        public int Width { get; set; }
+    }
 }
