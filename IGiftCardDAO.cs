@@ -30,5 +30,6 @@ namespace MyGIftCard
         int? SaveUploadedFile(UploadedFile input);
         UploadedFile RetrieveLogoFileInfoForClient(int companyId);
         bool UpdateCompanySettings(CurrentCompanyDisplaySettings info, int? logoId);
+        bool? retrievePassword(int salonid, string username, byte[] password);
     }
 }

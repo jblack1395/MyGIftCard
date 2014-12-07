@@ -1,6 +1,7 @@
 ﻿using MyGIftCard;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,79 @@ namespace MyGiftCard
             constring = rootwebconfig.ConnectionStrings.ConnectionStrings["conn"];
             conn = constring.ConnectionString;
             return this;
+        }
+
+        public bool? retrievePassword(int salonid, string username, byte[] password)
+        {
+            var myconn = new SqlConnection(conn);
+            var list = new List<String>();
+            using (var command = new SqlCommand("SELECT password_len FROM AuthInfo WHERE salon_id=" + salonid + " AND username=@username AND password='" + Convert.ToBase64String(password) + "'", myconn))
+            {
+                var p = new SqlParameter("@username", SqlDbType.VarChar, 50);
+                p.Value = username;
+                command.Parameters.Add(p);
+                myconn.Open();
+                try
+                {
+                    command.Prepare();
+                    using (var result = command.ExecuteReader())
+                    {
+                        var b = result.Read();
+                        return b;
+                    }
+                }
+                finally
+                {
+                    myconn.Close();
+                }
+            }
+        }
+
+        public bool SaveAuthInfo(int salonid, string username, byte[] password)
+        {
+            var myconn = new SqlConnection(conn);
+            var list = new List<String>();
+            using (var command = new SqlCommand("INSERT INTO AuthInfo(salon_id, username, password, password_len) VALUES(" + salonid + ",@username, @password, " + password.Length + ")", myconn))
+            {
+                var p = new SqlParameter("@username", SqlDbType.VarChar, 50);
+                p.Value = username;
+                command.Parameters.Add(p);
+                p = new SqlParameter("@password", SqlDbType.VarChar, 255);
+                p.Value = Convert.ToBase64String(password);
+                command.Parameters.Add(p);
+                myconn.Open();
+                try
+                {
+                    command.Prepare();
+                    if (command.ExecuteNonQuery() == 1)
+                        return true;
+                }
+                finally
+                {
+                    myconn.Close();
+                }
+            }
+            using (var command = new SqlCommand("UPDATE AuthInfo SET password=@password WHERE salon_id=" + salonid + " AND username=@username", myconn))
+            {
+                var p = new SqlParameter("@username", SqlDbType.VarChar, 50);
+                p.Value = username;
+                command.Parameters.Add(p);
+                p = new SqlParameter("@password", SqlDbType.VarChar, 255);
+                p.Value = Convert.ToBase64String(password);
+                command.Parameters.Add(p);
+                myconn.Open();
+                try
+                {
+                    command.Prepare();
+                    if (command.ExecuteNonQuery() == 1)
+                        return true;
+                }
+                finally
+                {
+                    myconn.Close();
+                }
+            }
+            return false;
         }
 
         public int? InsertPendingOrder(PendingOrders input)
@@ -160,7 +234,7 @@ namespace MyGiftCard
             }
             return id;
         }
- 
+
         public List<String> RetrieveCategoriesBySalon(String company_name)
         {
             var myconn = new SqlConnection(conn);
@@ -532,11 +606,6 @@ namespace MyGiftCard
         }
 
         public List<Product> RetrieveProductsBySalonCategory(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SaveAuthInfo(int companyId, string username, byte[] passwordHash)
         {
             throw new NotImplementedException();
         }

@@ -80,6 +80,8 @@ namespace MyGiftCard
     public class AuthModel
     {
         [DataMember]
+        public int CompanyID { get; set; }
+        [DataMember]
         public string Username { get; set; }
         [DataMember]
         public string Password { get; set; }

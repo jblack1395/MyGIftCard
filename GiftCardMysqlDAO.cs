@@ -178,5 +178,11 @@ namespace MyGIftCard
         {
             throw new NotImplementedException();
         }
+
+
+        public bool? retrievePassword(int salonid, string username, byte[] password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

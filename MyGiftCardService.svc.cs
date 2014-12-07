@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -17,6 +18,59 @@ using System.Xml.Serialization;
 
 namespace MyGiftCard
 {
+    static class SafeBase64UrlEncoder
+    {
+        private const string Plus = "+";
+        private const string Minus = "-";
+        private const string Slash = "/";
+        private const string Underscore = "_";
+        private const string EqualSign = "=";
+        private const string Pipe = "|";
+        private static readonly IDictionary<string, string> _mapper;
+
+        static SafeBase64UrlEncoder()
+        {
+            _mapper = new Dictionary<string, string> { { Plus, Minus }, { Slash, Underscore }, { EqualSign, Pipe } };
+        }
+
+        /// <summary>
+        /// Encode the base64 to safeUrl64
+        /// </summary>
+        /// <param name="base64Str"></param>
+        /// <returns></returns>
+        public static string EncodeBase64Url(string base64Str)
+        {
+            if (string.IsNullOrEmpty(base64Str))
+                return base64Str;
+
+            foreach (var pair in _mapper)
+            {
+                base64Str = base64Str.Replace(pair.Key, pair.Value);
+            }
+
+            return base64Str;
+        }
+
+
+        /// <summary>
+        /// Decode the Url back to original base64
+        /// </summary>
+        /// <param name="safe64Url"></param>
+        /// <returns></returns>
+        public static string DecodeBase64Url(string safe64Url)
+        {
+
+            if (string.IsNullOrEmpty(safe64Url))
+                return safe64Url;
+
+            foreach (var pair in _mapper)
+            {
+                safe64Url = safe64Url.Replace(pair.Value, pair.Key);
+            }
+
+            return safe64Url;
+        }
+    }
     public class MyGiftCardService : IMyGiftCardService
     {
         private readonly IMyGiftCardController giftCardController;
@@ -44,41 +98,32 @@ namespace MyGiftCard
             return stream1;
         }
 
-        public string SalonLogin(string salon_id, AuthModel model)
+        public string SalonLogin(string company_id, AuthModel model)
         {
-            var statuscode = System.Net.HttpStatusCode.Unauthorized;
             int id;
-            if (!Int32.TryParse(salon_id, out id))
+            WebOperationContext ctx = WebOperationContext.Current;
+            if (!Int32.TryParse(company_id, out id))
             {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Unauthorized;
                 return "Salon ID is not valid";
             }
-            var properties = OperationContext.Current.IncomingMessageProperties;
-            var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-            var msg = "my message";
-            if (endpointProperty != null)
+            OperationContext context = OperationContext.Current;
+            MessageProperties prop = context.IncomingMessageProperties;
+            RemoteEndpointMessageProperty endpoint =
+                prop[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+            string ip = "1";
+            var result = giftCardController.authenticateLogin(new AuthModel()
             {
-                var ip = endpointProperty.Address;
-                msg = ip.ToString() + ":" + salon_id + ":" + (DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalSeconds;
-            }
-            
-            var token = giftCardController.authenticateLogin(model, msg, id);
-            if (!String.IsNullOrWhiteSpace(token) && token.Length > 8)
-            {
-                if (token.Substring(0, 7).Contains("tok"))
-                {
-                    statuscode = System.Net.HttpStatusCode.Accepted;
-                }
-                else
-                {
-                    statuscode = System.Net.HttpStatusCode.Unauthorized;
-                }
-            }
-            WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
-            WebOperationContext.Current.OutgoingResponse.StatusCode = statuscode;
-            return token;
+                CompanyID = id,
+                Password = model.Password,
+                Username = model.Username
+            }, (id + ":" + ip + ":" + DateTime.Now.ToString("yyyMMdd_HHmmss")));
+
+            String s = result.Replace("\\", "");
+            return SafeBase64UrlEncoder.EncodeBase64Url(s);
         }
 
-        public Stream ListOrders(string op, string token, string startdate, string enddate, string customer_name)
+        public Stream ListOrders(string op, string urltoken, string startdate, string enddate, string customer_name)
         {
             if (op.ToLower().StartsWith("help"))
             {
@@ -99,6 +144,9 @@ namespace MyGiftCard
                 returnType = op.Substring(indx + 1);
                 op = op.Substring(0, indx);
             }
+            string token = urltoken.Replace("-", "+").Replace("_", "/").Replace("|", "=");
+            WebOperationContext ctx = WebOperationContext.Current;
+            MemoryStream stream1 = new MemoryStream();
             var s = giftCardController.verifyToken(token);
             int client = 0;
             var ss = s.Split(';');
@@ -116,7 +164,8 @@ namespace MyGiftCard
                     WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
                     return new MemoryStream(resultBytes);
             }
-            MemoryStream stream1 = new MemoryStream();
+            var ds = DateTime.ParseExact(startdate, "yyyyMMdd_hhmm", CultureInfo.InvariantCulture);
+            var de = DateTime.ParseExact(enddate, "yyyyMMdd_hhmm", CultureInfo.InvariantCulture);
             DateTime start = DateTime.Now;
             DateTime end = DateTime.Now;
             if (startdate.Equals("empty"))

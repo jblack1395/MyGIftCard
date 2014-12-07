@@ -8,17 +8,18 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace MyGiftCard
 {
     public class MyGiftCardController : IMyGiftCardController
     {
-        private static byte[] key;
-        private static byte[] iv;
-
         public readonly IEncryptionUtil encryptionUtil;
         public readonly IGiftCardDAO dao;
+        private static byte[] key = null;
+        private static byte[] iv;
+
 
         [InjectionConstructor]
         public MyGiftCardController(IEncryptionUtil encryptionUtil, IGiftCardDAO dao)
@@ -27,28 +28,48 @@ namespace MyGiftCard
             this.dao = dao;
         }
 
-        public string authenticateLogin(AuthModel model, string msg, int salonId)
+        public bool SaveAuthInfo(int salon_id, string username, string password)
         {
+            SHA256 mySHA256 = SHA256Managed.Create();
+            var enc = Encoding.Default;
+            var hash = mySHA256.ComputeHash(enc.GetBytes(password));
+            return dao.SaveAuthInfo(salon_id, username, hash);
+        }
+
+        public string authenticateLogin(AuthModel model, string msg)
+        {
+            var encryptionUtil = new EncryptionUtil();
             String token = "";
+            SHA256 mySHA256 = SHA256Managed.Create();
+            var enc = Encoding.Default;
+            var hash = mySHA256.ComputeHash(enc.GetBytes(model.Password));
             try
             {
-                    if (model.Password.Equals(new String(model.Username.ToCharArray().Reverse().ToArray())))
+                var fp = dao.retrievePassword(model.CompanyID, model.Username, hash);
+                if (!fp.HasValue)
+                {
+                    return "{\"error\":\"password not found, " + model.CompanyID + ", " + model.Username + "," + model.Password + "," + "SELECT password_len FROM AuthInfo WHERE salon_id=" + model.CompanyID + " AND username='" + model.Username + "' AND password='" + Convert.ToBase64String(hash) + "'" + "\"}";
+                }
+                if (fp.Value)
+                {
+                    token = "{\"token\":\"my token\"}";
+                    using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
                     {
-                        token = "{\"token\":\"my token\"}";
-                        using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
+                        // Encrypt the string to an array of bytes. 
+                        if (key == null)
                         {
-                            // Encrypt the string to an array of bytes. 
                             key = myAes.Key;
                             iv = myAes.IV;
-                            byte[] encrypted = encryptionUtil.EncryptStringToBytes_Aes(msg, myAes.Key, myAes.IV);
-                            token = "{\"token\":\"" + System.Convert.ToBase64String(encrypted) + "\", \"msg\":\"" + msg + "\"}";
                         }
-                    }
-                    else
-                    {
-                        token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + new String(model.Username.ToCharArray().Reverse().ToArray()) + "\"}";
+                        byte[] encrypted = encryptionUtil.EncryptStringToBytes_Aes(msg, key, iv);
+                        return (System.Convert.ToBase64String(encrypted));
                     }
                 }
+                else
+                {
+                    token = "{\"error\":\"Username or password does not match for salon, " + model.Username + "," + model.Password + "," + "SELECT password_len FROM AuthInfo WHERE salon_id=" + model.CompanyID + " AND username='" + model.Username + "' AND password='" + Convert.ToBase64String(hash) + "'" + "\"}";
+                }
+            }
             catch (Exception e)
             {
                 token = e.StackTrace;
@@ -115,7 +136,16 @@ namespace MyGiftCard
 
         public string verifyToken(string token)
         {
-            return encryptionUtil.DecryptToken(token, key, iv);
+            using (AesCryptoServiceProvider myAes = new AesCryptoServiceProvider())
+            {
+                // Encrypt the string to an array of bytes.
+                if (key == null)
+                {
+                    key = myAes.Key;
+                    iv = myAes.IV;
+                }
+                return encryptionUtil.DecryptToken(token, key, iv);
+            }
         }
     }
 }
