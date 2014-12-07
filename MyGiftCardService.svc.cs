@@ -275,9 +275,74 @@ namespace MyGiftCard
             return ms;
         }
 
-        public Stream ListCurrentSalonSettings(string token)
+        public Stream ListCurrentSettings(string urltoken)
         {
-            throw new NotImplementedException();
+            if (urltoken.ToLower().StartsWith("help"))
+            {
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                buf.Append("<tr><th>Order Name</th><th>Description</th></tr>");
+                buf.Append("</thead><tbody>");
+                buf.Append("<tr><td>ReportsByMonth</td><td>Look at the breakdown by month, default values is the past two months to today</td></tr>");
+                buf.Append("<tr><td>ReportsByMonthByCustomer</td><td>Look at the breakdown by month, looking at each customer individually, default values is the past two months to today</td></tr>");
+                buf.Append("</tbody></table></body></html>");
+                byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                return new MemoryStream(resultBytes);
+            }
+            string returnType = "html";
+            int indx = urltoken.IndexOf(".");
+            if (indx > -1)
+            {
+                returnType = urltoken.Substring(indx + 1);
+                urltoken = urltoken.Substring(0, indx);
+            }
+
+            string token = urltoken.Replace("-", "+").Replace("_", "/").Replace("|", "=");
+            WebOperationContext ctx = WebOperationContext.Current;
+            MemoryStream stream1 = new MemoryStream();
+            var s = giftCardController.verifyToken(token);
+            int client = 0;
+            var ss = s.Split(';');
+            if (ss.Length == 3)
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Accepted;
+                int.TryParse(ss[0], out client);
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body>");
+                    buf.Append("The token used was invalid, please login again.</body></html>");
+                    byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                    return new MemoryStream(resultBytes);
+            }
+
+            var t = giftCardController.RetrieveCurrentSettings(int.Parse(ss[0]));
+            if (returnType == "json")
+            {
+                WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(CurrentCompanyDisplaySettings));
+                ser.WriteObject(stream1, t);
+            }
+            else if (returnType == "xml")
+            {
+                WebOperationContext.Current.OutgoingResponse.ContentType = "application/xml";
+                XmlSerializer ser = new XmlSerializer(typeof(List<RedeemeddOrders>));
+                Console.WriteLine("Testing for type: {0}", typeof(CurrentCompanyDisplaySettings));
+                ser.Serialize(XmlWriter.Create(stream1), t);
+                stream1.Flush();
+            }
+            else
+            {
+                StringBuilder buf = new StringBuilder("<html><head><title></title></head><body><table><thead>");
+                buf.Append("</thead><tbody>");
+                buf.Append("</tbody></table></body></html>");
+                byte[] resultBytes = Encoding.UTF8.GetBytes(buf.ToString());
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/plain";
+                stream1 = new MemoryStream(resultBytes);
+            }
+            return stream1;
         }
 
 
@@ -333,11 +398,6 @@ namespace MyGiftCard
         }
 
         Stream IMyGiftCardService.SalonImage(string salon, string image_type, string width_percentage)
-        {
-            throw new NotImplementedException();
-        }
-
-        Stream IMyGiftCardService.ListCurrentSalonSettings(string token)
         {
             throw new NotImplementedException();
         }

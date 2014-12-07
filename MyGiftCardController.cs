@@ -82,6 +82,11 @@ namespace MyGiftCard
             return dao.retrieveClients();
         }
 
+        public CurrentCompanyDisplaySettings RetrieveCurrentSettings(int id)
+        {
+            return dao.RetrieveDisplaySettings(id);
+        }
+
         public List<T> retrieveOrdersByClient<T>(int ordertype, int client, DateTime startdate, DateTime enddate, string filtername)
         {
             switch (ordertype)

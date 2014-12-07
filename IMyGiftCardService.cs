@@ -62,8 +62,8 @@ namespace MyGiftCard
         [WebInvoke(Method = "GET",
             BodyStyle = WebMessageBodyStyle.Bare,
                                  ResponseFormat = WebMessageFormat.Json,
-                                UriTemplate = "ListCurrentSalonSettings/{token}")]
-        Stream ListCurrentSalonSettings(string token);
+                                UriTemplate = "ListCurrentSettings/{token}")]
+        Stream ListCurrentSettings(string token);
 
         [OperationContract(Name = "Upload")]
         [DataContractFormat]

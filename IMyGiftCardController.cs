@@ -15,5 +15,6 @@ namespace MyGiftCard
         Image retrieveUploadedFile(int client, string filetype, int width_percentage);
         string authenticateLogin(AuthModel model, string msg);
         string verifyToken(String token);
+        CurrentCompanyDisplaySettings RetrieveCurrentSettings(int id);
     }
 }
